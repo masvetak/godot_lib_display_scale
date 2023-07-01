@@ -32,8 +32,8 @@ func _input(event: InputEvent) -> void:
 				if event.ctrl_pressed:
 					@warning_ignore("int_as_enum_without_cast")
 					scale_factor = scale_factor + 1
-					if scale_factor > SCALE_FACTOR.size():
-						scale_factor = SCALE_FACTOR.SCALE_FACTOR_200
+					if scale_factor > SCALE_FACTOR.size() - 1:
+						scale_factor = SCALE_FACTOR.SCALE_FACTOR_250
 					_set_display_scale(scale_factor)
 			if event.keycode == KEY_MINUS:
 				if event.ctrl_pressed:

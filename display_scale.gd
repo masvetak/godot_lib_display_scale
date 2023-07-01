@@ -8,7 +8,9 @@ enum SCALE_FACTOR {
 	SCALE_FACTOR_125,
 	SCALE_FACTOR_150,
 	SCALE_FACTOR_175,
-	SCALE_FACTOR_200
+	SCALE_FACTOR_200,
+	SCALE_FACTOR_225,
+	SCALE_FACTOR_250
 }
 
 @export var scale_factor: SCALE_FACTOR = SCALE_FACTOR.SCALE_FACTOR_AUTO:
@@ -78,3 +80,9 @@ func _set_display_scale(display_scale: int) -> void:
 			get_window().content_scale_factor = 1.75
 		SCALE_FACTOR.SCALE_FACTOR_200:
 			get_window().content_scale_factor = 2.00
+		SCALE_FACTOR.SCALE_FACTOR_225:
+			get_window().content_scale_factor = 2.25
+		SCALE_FACTOR.SCALE_FACTOR_250:
+			get_window().content_scale_factor = 2.50
+		_:
+			get_window().content_scale_factor = _get_auto_display_scale()

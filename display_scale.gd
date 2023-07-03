@@ -10,7 +10,9 @@ enum SCALE_FACTOR {
 	SCALE_FACTOR_175,
 	SCALE_FACTOR_200,
 	SCALE_FACTOR_225,
-	SCALE_FACTOR_250
+	SCALE_FACTOR_250,
+	SCALE_FACTOR_275,
+	SCALE_FACTOR_300,
 }
 
 @export var scale_factor: SCALE_FACTOR = SCALE_FACTOR.SCALE_FACTOR_AUTO:
@@ -33,7 +35,7 @@ func _input(event: InputEvent) -> void:
 					@warning_ignore("int_as_enum_without_cast")
 					scale_factor = scale_factor + 1
 					if scale_factor > SCALE_FACTOR.size() - 1:
-						scale_factor = SCALE_FACTOR.SCALE_FACTOR_250
+						scale_factor = SCALE_FACTOR.SCALE_FACTOR_300
 					_set_display_scale(scale_factor)
 			if event.keycode == KEY_MINUS:
 				if event.ctrl_pressed:
@@ -84,5 +86,9 @@ func _set_display_scale(display_scale: int) -> void:
 			get_window().content_scale_factor = 2.25
 		SCALE_FACTOR.SCALE_FACTOR_250:
 			get_window().content_scale_factor = 2.50
+		SCALE_FACTOR.SCALE_FACTOR_275:
+			get_window().content_scale_factor = 2.75
+		SCALE_FACTOR.SCALE_FACTOR_300:
+			get_window().content_scale_factor = 3.00
 		_:
 			get_window().content_scale_factor = _get_auto_display_scale()

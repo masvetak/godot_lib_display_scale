@@ -1,5 +1,7 @@
 extends Node
 
+signal scale_factor_changed(scale_factor)
+
 enum SCALE_FACTOR {
 	SCALE_FACTOR_AUTO = 0,
 	SCALE_FACTOR_50,
@@ -30,8 +32,14 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed:
+			if event.keycode == KEY_0:
+				if event.ctrl_pressed:
+					_set_display_scale(SCALE_FACTOR.SCALE_FACTOR_AUTO)
 			if event.keycode == KEY_EQUAL:
 				if event.ctrl_pressed:
+					if scale_factor == SCALE_FACTOR.SCALE_FACTOR_AUTO:
+						@warning_ignore("int_as_enum_without_cast")
+						scale_factor = _get_display_scale()
 					@warning_ignore("int_as_enum_without_cast")
 					scale_factor = scale_factor + 1
 					if scale_factor > SCALE_FACTOR.size() - 1:
@@ -39,10 +47,13 @@ func _input(event: InputEvent) -> void:
 					_set_display_scale(scale_factor)
 			if event.keycode == KEY_MINUS:
 				if event.ctrl_pressed:
+					if scale_factor == SCALE_FACTOR.SCALE_FACTOR_AUTO:
+						@warning_ignore("int_as_enum_without_cast")
+						scale_factor = _get_display_scale()
 					@warning_ignore("int_as_enum_without_cast")
 					scale_factor = scale_factor - 1
-					if scale_factor < 0:
-						scale_factor = SCALE_FACTOR.SCALE_FACTOR_AUTO
+					if scale_factor < SCALE_FACTOR.SCALE_FACTOR_50:
+						scale_factor = SCALE_FACTOR.SCALE_FACTOR_50
 					_set_display_scale(scale_factor)
 
 # ------------------------------------------------------------------------------
@@ -92,3 +103,32 @@ func _set_display_scale(display_scale: int) -> void:
 			get_window().content_scale_factor = 3.00
 		_:
 			get_window().content_scale_factor = _get_auto_display_scale()
+	
+	scale_factor_changed.emit(display_scale)
+
+func _get_display_scale() -> int:
+	match get_window().content_scale_factor:
+		0.50:
+			return SCALE_FACTOR.SCALE_FACTOR_50
+		0.75:
+			return SCALE_FACTOR.SCALE_FACTOR_75
+		1.00:
+			return SCALE_FACTOR.SCALE_FACTOR_100
+		1.25:
+			return SCALE_FACTOR.SCALE_FACTOR_125
+		1.50:
+			return SCALE_FACTOR.SCALE_FACTOR_150
+		1.75:
+			return SCALE_FACTOR.SCALE_FACTOR_175
+		2.00:
+			return SCALE_FACTOR.SCALE_FACTOR_200
+		2.25:
+			return SCALE_FACTOR.SCALE_FACTOR_225
+		2.50:
+			return SCALE_FACTOR.SCALE_FACTOR_250
+		2.75:
+			return SCALE_FACTOR.SCALE_FACTOR_275
+		3.00:
+			return SCALE_FACTOR.SCALE_FACTOR_300
+		_:
+			return SCALE_FACTOR.SCALE_FACTOR_AUTO
